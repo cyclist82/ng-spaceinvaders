@@ -5,6 +5,7 @@ import { SpiPosition } from '../../shared/interfaces/position.model';
 import { PLAYER_SHIP_SIZE, SpiPlayerShipService } from '../player-ship/player-ship.service';
 
 const LASER_WIDTH = 3;
+const LASER_RELOAD_TIME = 300;
 
 @Injectable({
   providedIn: 'root'
@@ -36,11 +37,11 @@ export class SpiLasersService {
       first(),
     );
 
-    const wait$ = of(null).pipe(
-      delay(200),
+    const laserReload$ = of(null).pipe(
+      delay(LASER_RELOAD_TIME),
     );
 
-    return concat(of(null), shot$, of(null), wait$).pipe(
+    return concat(of(null), shot$, of(null), laserReload$).pipe(
       repeat(),
     );
   }
