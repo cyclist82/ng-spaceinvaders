@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { concat, fromEvent, Observable, of, race, timer } from 'rxjs';
-import { distinctUntilChanged, filter, first, map, repeat, scan, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, repeat, scan, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ARROW_KEYS, SpiArrowKey } from '../../constants/keycodes';
-import { SpiGameService } from '../game/game.service';
-import { SpiDirection, SpiPosition } from './player-ship.model';
+import { SpiPosition } from '../../shared/interfaces/position.model';
+import { SpiDirection } from './player-ship.model';
 
-const PLAYER_SHIP_SIZE = 40;
+export const PLAYER_SHIP_SIZE = 50;
 const PLAYER_OFFSET_BOTTOM = 150;
 
 @Injectable({
@@ -13,17 +13,7 @@ const PLAYER_OFFSET_BOTTOM = 150;
 })
 export class SpiPlayerShipService {
 
-  currentPosition$: Observable<SpiPosition>;
-
-  constructor(
-    private gameService: SpiGameService,
-  ) {
-    this.gameService.gameStarted().pipe(
-      tap(() => this.onStartGame()),
-    ).subscribe();
-  }
-
-  onStartGame(): void {
+  playerShipPosition(): Observable<SpiPosition> {
     const direction$ = race(
       ARROW_KEYS.map(key => this.arrowPressed(key)),
     ).pipe(
@@ -32,15 +22,16 @@ export class SpiPlayerShipService {
 
     const tickingDirection$ = timer(0, 32).pipe(
       withLatestFrom(direction$),
-      filter(([tick, direction]) => !!direction),
       map(([tick, direction]) => direction),
+      filter(direction => !!direction),
     );
 
-    this.currentPosition$ = concat(
+    return concat(
       of(null),
       tickingDirection$
     ).pipe(
       scan(this.getNextPosition, this.initialPosition),
+      shareReplay(1),
     );
   }
 
