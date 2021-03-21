@@ -2,15 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpiGameComponent } from './game.component';
 
-describe('GameComponent', () => {
+describe(SpiGameComponent.name, () => {
   let component: SpiGameComponent;
   let fixture: ComponentFixture<SpiGameComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SpiGameComponent ]
-    })
-    .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        SpiGameComponent
+      ]
+    }).compileComponents();
   });
 
   beforeEach(() => {
