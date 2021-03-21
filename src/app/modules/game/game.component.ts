@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { SpiLasersService } from '../../services/lasers/lasers.service';
 import { SpiOffset } from '../../services/player-ship/player-ship.model';
 import { SpiPlayerShipService } from '../../services/player-ship/player-ship.service';
@@ -30,7 +30,6 @@ export class SpiGameComponent implements OnInit, OnDestroy {
     );
 
     this.playerLasers$ = this.lasersService.playerLasers().pipe(
-      tap(console.log),
       map(lasers => lasers.map(this.mapCoordinates)),
     );
   }
