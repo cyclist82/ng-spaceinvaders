@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SpiLasersService } from '../../services/lasers/lasers.service';
 import { SpiOffset } from '../../services/player-ship/player-ship.model';
@@ -12,12 +12,10 @@ import { SpiPosition } from '../../shared/interfaces/position.model';
   styleUrls: ['./game.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpiGameComponent implements OnInit, OnDestroy {
+export class SpiGameComponent implements OnInit {
 
   playerPosition$: Observable<SpiOffset>;
   playerLasers$: Observable<SpiOffset[]>;
-
-  private destroyed$ = new Subject();
 
   constructor(
     private lasersService: SpiLasersService,
@@ -32,11 +30,6 @@ export class SpiGameComponent implements OnInit, OnDestroy {
     this.playerLasers$ = this.lasersService.playerLasers().pipe(
       map(lasers => lasers.map(this.mapCoordinates)),
     );
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   private mapCoordinates({ top, left }: SpiPosition): SpiOffset {
