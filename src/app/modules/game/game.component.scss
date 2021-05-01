@@ -1,4 +1,6 @@
 $player-ship-size: 50px;
+$laser-length: 20px;
+$laser-width: 3px;
 
 :host {
   display: block;
@@ -8,4 +10,10 @@ $player-ship-size: 50px;
 .player-ship {
   position: absolute;
   width: $player-ship-size;
+}
+
+.laser {
+  position: absolute;
+  height: $laser-length;
+  width: $laser-width;
 }

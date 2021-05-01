@@ -2,5 +2,11 @@
   class='player-ship'
   src='./assets/images/player-ship.svg'
   alt='player-ship'
-  [ngStyle]='playerPosition$ | async'
-  class='player-ship'>
+  [ngStyle]='playerPosition$ | async'>
+<svg
+  *ngFor='let laser of playerLasers$ | async'
+  class='laser'
+  [ngStyle]='laser'
+  xmlns='http://www.w3.org/2000/svg'>
+  <line x1='0' y1='0' x2='0' y2='20' stroke='red' stroke-width='5'/>
+</svg>
